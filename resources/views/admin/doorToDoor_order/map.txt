@@ -1,0 +1,200 @@
+$route = [];
+        $tour = [];
+        //Membangun lintasan
+        for ($z=0; $z < $iteration; $z++) { 
+
+            $route[$z] = [];
+            $current_unvisited_point = $unvisited_point;
+            for ($i=0; $i < $ant; $i++) { 
+
+                $route[$z][$i] = [];
+                if ($i < $ant-1) {
+                    
+                    for ($j=0; $j < $ant; $j++) { 
+
+                        $q = rand(1, 10)/10;
+                        $next_point;
+                        
+                        if ($q <= $q0) {
+
+                            $temporary_max = 0;
+
+                            // Mencari titik berikutnya
+                            for ($k=0; $k < $ant-1; $k++) {
+
+                                if (in_array($k, $current_unvisited_point[$j])) {
+                                    
+                                    $temporary = $pheromone[$i][$k] * ($visibility[$i][$k]^$beta);
+                                    if ($temporary > $temporary_max) {
+
+                                        $temporary_max = $temporary;
+                                        $next_point = $k;
+                                    }
+                                }
+                            }
+                        } else {
+                            
+                            $temporary_total = 0;
+
+                            for ($l=0; $l < $ant-1; $l++) { 
+                                $temporary = $pheromone[$i][$l] * ($visibility[$i][$l]^$beta);
+                                $temporary_total += $temporary;
+                            }
+
+                            $probability_max = 0;
+
+                            // Mencari titik berikutnya
+                            for ($k=0; $k < $ant; $k++) { 
+
+                                if (in_array($k, $current_unvisited_point[$j])) {
+
+                                    $temporary = $pheromone[$i][$k] * ($visibility[$i][$k]^$beta);
+                                    $probability = $temporary/$temporary_total;
+
+                                    if ($probability > $probability_max) {
+
+                                        $probability_max = $probability;
+                                        $next_point = $k;
+
+                                    }
+                                }
+                            }
+                        }
+                        unset($current_unvisited_point[$j][array_search($next_point,$current_unvisited_point[$j])]);
+                        $route[$z][$i][$j] = [$current_point[$j], $next_point];
+                        
+                        
+                    }
+                } else {
+
+                    for ($j=0; $j < $ant; $j++) { 
+                        
+                        $next_point = $starting_point[$j];
+                        $route[$z][$i][$j] = [$current_point[$j], $next_point];
+                    }
+                }
+
+                // Local Pheromone Update
+                for ($j=0; $j < $ant; $j++) { 
+
+                    $r = $route[$z][$i][$j][0];
+                    $s = $route[$z][$i][$j][1];
+
+                    $a = (1-$local_evaporation_parameter) * $pheromone[$r][$s] + $local_evaporation_parameter * $early_pheromone;
+
+                    $current_point[$j] = $s;
+                    
+                }
+            }
+
+            // Global Pheromone Update
+            $tour[$z] = [];
+            //Menghitung panjang rute
+            for ($i=0; $i < $ant; $i++) { 
+                
+                $tour[$z][$i] = 0;
+                for ($j=0; $j < $ant; $j++) {
+                        
+                    $r = $route[$z][$j][$i][0];
+                    $s = $route[$z][$j][$i][1];
+
+                    $tour[$z][$i] += $distance_matrix[$r][$s];
+                }
+            };
+            $best_tour = array_search(min($tour[$z]), $tour[$z]);
+            
+            for ($i=0; $i < $ant; $i++) {
+
+                if ($i == $best_tour) {
+                    $delta_t = 1/$tour[$z][$best_tour];
+                } else {
+                    $delta_t = 0;
+                }
+
+                for ($j=0; $j < $ant; $j++) { 
+                    $r = $route[$z][$i][$j][0];
+                    $s = $route[$z][$i][$j][1];
+
+                    $pheromone[$r][$s] = (1-$global_evaporation_parameter) * $pheromone[$r][$s] + $global_evaporation_parameter * $delta_t;
+                }
+            }
+        }
+
+        $best_i = 0;
+        $best_j = 0;
+
+        for ($i=0; $i < count($tour); $i++) { 
+            for ($j=0; $j < count($tour[$i]); $j++) { 
+                
+                if ($tour[$i][$j] < $tour[$best_i][$best_j]) {
+                    $best_i = $i;
+                    $best_j = $j;
+                }
+            }
+        }
+
+        $global_best_tour = $tour[$best_i][$best_j];
+        $global_best_route = [];
+
+        for ($i=0; $i <= count($tour[$best_i]); $i++) { 
+
+            if ($i == 0) {
+                $global_best_route[$i] = $starting_point[$best_j];
+            } elseif ($i < count($tour[$best_i])) {
+                $global_best_route[$i] = $route[$best_i][$i][$best_j][0];
+            } else {
+                $global_best_route[$i] = $starting_point[$best_j];
+            }
+        }
+
+        return $global_best_route;
+
+<script>
+    var pick_up_map = new GMaps({
+            div: '#pick-up-map',
+            zoom: 10
+        });
+        drop_off_map = new GMaps({
+            div: '#drop-off-map',
+            zoom: 10
+        });
+
+    GMaps.geocode({
+        address: '{{$data->origin->name}}',
+        callback: function(results, status) {
+            if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                pick_up_map.setCenter(latlng.lat(), latlng.lng());
+            }
+        }
+    });
+
+    GMaps.geocode({
+        address: '{{$data->destination->name}}',
+        callback: function(results, status) {
+            if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                drop_off_map.setCenter(latlng.lat(), latlng.lng());
+            }
+        }
+    });
+
+    // add marker
+    @foreach ($passenger as $row)
+        pick_up_map.addMarker({
+            position: new google.maps.LatLng( {{$row->pick_up_point}} ),
+            infoWindow: {
+                content: '<h6>{{$row->user->name}}</h6><p>{{$row->quantity}} penumpang</p'
+            }
+        });
+    @endforeach
+
+    @foreach ($passenger as $row)
+        drop_off_map.addMarker({
+            position: new google.maps.LatLng( {{$row->drop_off_point}} ),
+            infoWindow: {
+                content: '<h6>{{$row->user->name}}</h6><p>{{$row->quantity}} penumpang</p'
+            }
+        });
+    @endforeach
+</script>

@@ -1,0 +1,155 @@
+body{
+    background-color: #F5FAFF;
+}
+.button {
+    padding: 5px 10px;
+}
+
+.button-primary {
+    background-color: #13DB88;
+    color: white;
+    border: none;
+}
+
+.button-secondary {
+    background-color: rgba(20, 172, 108, 0.07);
+    color: #13DB88;
+    border: none;
+}
+
+.button-circle {
+    width: 20px;
+    height: 20px;
+    font-size: 8px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+.top {
+    margin: 20px;
+}
+
+.notification {
+    width: 40px;
+    height: 40px;
+    border: solid 4px rgba(255,255,255, 0.3);
+    background: linear-gradient(135deg, rgba(245,250,255,1) 0%, rgba(255,255,255,1) 100%);
+    box-shadow: 6px 6px 20px rgba(1, 94, 55, 0.08);
+    border-radius: 15px;   
+    font-size: 20px;
+    text-align: center;
+    margin-left:auto;
+    margin-right:0;
+    color: #13DB88;
+}
+
+.greeting {
+    margin: 0px 20px;
+    margin-bottom: 20px;
+}
+
+.greeting .time{
+    font-family: Poppins-Regular;
+    margin: 0;
+    font-size: 12px;
+}
+
+.greeting .name{
+    font-size: 25px;
+    font-family: Poppins-Bold;
+    margin: 0;
+}
+
+.greeting a{
+    text-decoration: none;
+    color: #13DB88;
+    font-weight: bold;
+}
+
+.info {
+    background: linear-gradient(135deg, rgba(245,250,255,1) 0%, rgba(255,255,255,1) 100%);
+    border: solid 4px rgba(255,255,255, 0.3);
+    box-shadow: 6px 6px 20px rgba(1, 94, 55, 0.08);
+    border-radius: 20px;
+    margin: 0px 20px;
+    text-align: left;
+    padding: 10px 10px;
+    font-size: 12px;
+    display: flex;
+}
+.info .message i {
+    margin-right: 10px;
+}
+.info button {
+    margin-left:auto;
+    margin-right:0;
+}
+
+.home-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+.menu-button {
+    width: 145px;
+    height: 175px;
+    border: solid 4px rgba(255,255,255, 0.3);
+    background: linear-gradient(135deg, rgba(245,250,255,1) 0%, rgba(255,255,255,1) 100%);
+    box-shadow: 6px 6px 20px rgba(1, 94, 55, 0.08);
+    border-radius: 20px;
+    margin-top: 10px;
+    padding-top: 30px;
+    text-decoration: none;
+}
+
+.menu-button .title{
+    text-align: center;
+    color: #202020;
+    width: 100%;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+.menu-button .icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(20, 172, 108, 0.07);
+    margin: auto;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.menu-button i {
+    color: #13DB88;
+    font-size: 25px;
+    margin-top: 10px;
+    margin-left:auto;
+    margin-right:0;
+}
+
+.login {
+    padding: 0px 30px;
+    padding-top: 150px;
+}
+
+.tabbar a {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.tabbar #active{
+    border-bottom: 4px solid #13DB88;
+}
+
+.tabbar #active a{
+    color: #13DB88;
+}
