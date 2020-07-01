@@ -21,7 +21,7 @@ class CreateDoorToDoorServicesTable extends Migration
             $table->integer('price');
             $table->dateTime('start');
             $table->dateTime('finish')->nullable();
-            $table->string('route_status')->default('not available');
+            $table->integer('route_status')->default('0');
             $table->string('status')->default('scheduled');
             $table->timestamps();
         });
