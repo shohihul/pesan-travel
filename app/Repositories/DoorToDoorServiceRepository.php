@@ -15,9 +15,9 @@ class DoorToDoorServiceRepository
 	    $this->model = $model;
     }
 
-    public function find($id)
+    public function find($doorToDoorService_id)
 	{
-		return $this->model->find($id);
+		return $this->model->find($doorToDoorService_id);
 	}
     
     public function get_scheduled()
