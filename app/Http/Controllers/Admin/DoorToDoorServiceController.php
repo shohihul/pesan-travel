@@ -14,6 +14,7 @@ use App\Repositories\UserRepository;
 use App\Http\Requests\DoorToDoorServiceStoreRequest;
 
 use App\Models\Regencie;
+use App\Models\DoorToDoorService;
 
 class DoorToDoorServiceController extends Controller
 {
@@ -110,11 +111,11 @@ class DoorToDoorServiceController extends Controller
         );
     }
 
-    public function route($doorToDoorService_id)
+    public function route(DoorToDoorService $doorToDoorService)
     {
-        $service = $this->doorToDoorServiceRepository->find($doorToDoorService_id);
+        $doorToDoorService_id = $doorToDoorService->id;
 
-        if ($service['route_status'] == 0) {
+        if ($doorToDoorService['route_status'] == 0) {
             return redirect(route('admin.doorToDoor_service.show', $doorToDoorService_id));
         }
 
@@ -138,7 +139,7 @@ class DoorToDoorServiceController extends Controller
             compact(
                 'pickup_route',
                 'dropoff_route',
-                'service',
+                'doorToDoorService',
                 'passenger'
             )
         );
@@ -178,11 +179,11 @@ class DoorToDoorServiceController extends Controller
         //
     }
 
-    public function search_route($doorToDoorService_id)
+    public function search_route(DoorToDoorService $doorToDoorService)
     {
-        $service = $this->doorToDoorServiceRepository->find($doorToDoorService_id);
+        $doorToDoorService_id = $doorToDoorService->id;
 
-        if ($service['route_status'] == 1) {
+        if ($doorToDoorService['route_status'] == 1) {
             return redirect(route('admin.doorToDoor_service.route', $doorToDoorService_id));
         }
 
@@ -266,7 +267,7 @@ class DoorToDoorServiceController extends Controller
             $this->doorToDoorOrderRepository->update_sequence($passenger_updated, $pickup, $dropoff);
         }
 
-        $this->doorToDoorServiceRepository->route_status_available($service);
+        $this->doorToDoorServiceRepository->route_status_available($doorToDoorService);
 
         return redirect(route('admin.doorToDoor_service.route', $doorToDoorService_id));
     }

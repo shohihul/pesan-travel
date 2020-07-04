@@ -15,51 +15,24 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h4>Form Tambah Penumpang</h4>
+                    <h4>Ubah Lokasi Penjemputan & Pengantaran Penumpang</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{{route('admin.doorToDoor_order.store')}}" autocomplete="off" enctype="multipart/form-data">
+                    <form method="post" action="{{route('admin.doorToDoor_order.update', $doorToDoorOrder->id)}}" autocomplete="off" enctype="multipart/form-data">
                         @csrf
+                        @method ('put')
                         <div class="pl-lg-4">
-                            <input name="door_to_door_service_id" type="number" class="form-control" value="{{$service->id}}" hidden>
-                            <input type="number" name="amount" id="input_amount" value="{{$service->price}}" hidden>
-                            <input type="text" name="pick_up_point" id="input-pickUp-point" hidden>
-                            <input type="text" name="drop_off_point" id="input-dropOff-point" hidden>
+                            <input type="text" name="pick_up_point" id="input-pickUp-point" value="{{$doorToDoorOrder->pick_up_point}}" hidden>
+                            <input type="text" name="drop_off_point" id="input-dropOff-point" value="{{$doorToDoorOrder->drop_off_point}}" hidden>
 
                             <div class="form-group">
-                                <label>Akun Penumpang
-                                        <span class="text-danger">*</span>
-                                </label>
-                                <div class="form-row">
-                                    <div class="input-group col-md-8">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <i class="fas fa-user"></i>
-                                            </div>
-                                        </div>
-                                        <select class="form-control select2" required="" name="customer_id" autofocus>
-                                            @foreach ($customers as $customer)
-                                            <option value="{{$customer->id}}">{{$customer->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+                                <label>Akun Penumpang</label>
+                                <input type="text" class="form-control-plaintext" readonly="" value="{{$doorToDoorOrder->user->name}}">
                             </div>
 
                             <div class="form-group">
-                                <label>Jumlah Penumpang
-                                        <span class="text-danger">*</span>
-                                </label>
-                                <div class="form-row">
-                                    <div class="input-group col-md-8">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <i class="fas fa-users"></i>
-                                            </div>
-                                        </div>
-                                        <input id="input_quantity" name="quantity" type="number" class="form-control" value="1" required="">
-                                    </div>
-                                </div>
+                                <label>Jumlah Penumpang</label>
+                                <input type="text" class="form-control-plaintext" readonly="" value="{{$doorToDoorOrder->quantity}} Penumpang">
                             </div>
 
                             <div class="form-group">
@@ -109,37 +82,16 @@
             zoom: 12
         });
         marker_pickUp_point = pickUp_point.addMarker({
-            lat: 0,
-            lng: 0,
-            visible: false,
+            position: new google.maps.LatLng( {{$doorToDoorOrder->pick_up_point}} ),
             title: 'Titik Penjemputan'
         });
         marker_dropOff_point = dropOff_point.addMarker({
-            lat: 0,
-            lng: 0,
-            visible: false,
+            position: new google.maps.LatLng( {{$doorToDoorOrder->drop_off_point}} ),
             title: 'Titik Pengantaran'
         });
-
-    GMaps.geocode({
-        address: '{{$service->origin->name}}',
-        callback: function(results, status) {
-            if (status == 'OK') {
-                var latlng = results[0].geometry.location;
-                pickUp_point.setCenter(latlng.lat(), latlng.lng());
-            }
-        }
-    });
-
-    GMaps.geocode({
-        address: '{{$service->destination->name}}',
-        callback: function(results, status) {
-            if (status == 'OK') {
-                var latlng = results[0].geometry.location;
-                dropOff_point.setCenter(latlng.lat(), latlng.lng());
-            }
-        }
-    });
+    
+    pickUp_point.setCenter({{$doorToDoorOrder->pick_up_point}});
+    dropOff_point.setCenter({{$doorToDoorOrder->drop_off_point}});
 
     // when the map is clicked
     pickUp_point.addListener("click", function(e) {
