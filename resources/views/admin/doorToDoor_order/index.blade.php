@@ -35,7 +35,11 @@
                                 <td class="text-warning mb-2">{{@$locationStatus[$row->location_point_status]}}</td>
                                 <td>
                                     <a class="btn btn-info" href="{{route('admin.doorToDoor_order.show', $row->id)}}">Detail</a>
-                                    <button class="btn btn-danger">Hapus</button>
+                                    <form action="{{route('admin.doorToDoor_order.delete', $row->id)}}" method="POST" style="display: inline-block;">
+                                        @csrf()
+                                        @method('delete')
+                                        <input type="submit" value="Delete" class="btn btn-danger">
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach

@@ -147,8 +147,10 @@ class DoorToDoorOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(DoorToDoorOrder $doorToDoorOrder)
     {
-        //
+        $this->doorToDoorOrderRepository->delete($doorToDoorOrder);
+
+        return redirect(route('admin.doorToDoor_order.index'));
     }
 }

@@ -83,6 +83,20 @@ class DoorToDoorOrderRepository
         }
     }
 
+    public function delete(DoorToDoorOrder $doorToDoorOrder)
+    {
+        DB::beginTransaction();
+
+        try {
+            $doorToDoorOrder->delete();
+            DB::commit();
+            return $doorToDoorOrder;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e);
+        }
+    }
+
     public function update_sequence(DoorToDoorOrder $passenger_updated, $pickup, $dropoff)
     {
         $passenger_updated->pickup_sequence = $pickup;

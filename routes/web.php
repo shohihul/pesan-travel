@@ -52,6 +52,8 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.doorToDoor_order.update'); // route('admin.doorToDoor_order.update')
             Route::get('/admin/doorToDoor_order/{doorToDoorOrder}/show', 'DoorToDoorOrderController@show')
                 ->name('admin.doorToDoor_order.show'); // route('admin.doorToDoor_order.show')
+            Route::delete('/admin/doorToDoor_order/{doorToDoorOrder}/delete', 'DoorToDoorOrderController@delete')
+                ->name('admin.doorToDoor_order.delete'); // route('admin.doorToDoor_order.delete')
 
 
             // Door To Door Service
