@@ -6,6 +6,7 @@ use App\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use App\Http\Requests\UserStoreRequest;
 use File;
@@ -60,8 +61,9 @@ class UserRepository
                 'name' => $request->name,
                 'email' => $request->email,
                 'role_id' => $request->role_id,
-                'password' => $request->password,
-                'photo' => $fileName
+                'password' => bcrypt($request->password),
+                'photo' => $fileName,
+                'api_token' => Str::random(80),
             ]);
             DB::commit();
         } catch (\Exception $e) {
