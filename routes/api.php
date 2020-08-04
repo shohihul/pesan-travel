@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
+Route::get('route', 'Api\DoorToDoorServiceController@route_index');
+Route::get('route_schedule/{origin_id}/{destination_id}', 'Api\DoorToDoorServiceController@route_schedule_index');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -18,7 +18,24 @@ class DoorToDoorServiceRepository
     public function find($id)
 	{
 		return $this->model->find($id);
-	}
+    }
+
+    public function get_by_origin_destination_id($origin_id, $destination_id)
+    {
+        return $this->model
+            ->where('origin_id', $origin_id)
+            ->where('destination_id', $destination_id)
+            ->get();
+    }
+    
+    public function get_route()
+    {
+        return $this->model
+            ->where('status', 'scheduled')
+            ->groupBy('origin_id', 'destination_id')
+            ->select('origin_id', 'destination_id')
+            -get();
+    }
     
     public function get_scheduled()
     {
