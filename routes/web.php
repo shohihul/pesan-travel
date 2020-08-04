@@ -40,10 +40,20 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.user.delete'); // route('admin.user.delete')
 
             // Door To Door Order
+            Route::get('/admin/doorToDoor_order/index', 'DoorToDoorOrderController@index')
+                ->name('admin.doorToDoor_order.index'); // route('admin.doorToDoor_order.index')
             Route::get('/admin/doorToDoor_order/{service_id}/create', 'DoorToDoorOrderController@create')
                 ->name('admin.doorToDoor_order.create'); // route('admin.doorToDoor_order.create')
             Route::post('/admin/doorToDoor_order/store', 'DoorToDoorOrderController@store')
                 ->name('admin.doorToDoor_order.store'); // route('admin.doorToDoor_order.store')
+            Route::get('/admin/doorToDoor_order/{doorToDoorOrder}/edit', 'DoorToDoorOrderController@edit')
+                ->name('admin.doorToDoor_order.edit'); // route('admin.doorToDoor_order.edit')
+            Route::put('/admin/doorToDoor_order/{doorToDoorOrder}/update', 'DoorToDoorOrderController@update')
+                ->name('admin.doorToDoor_order.update'); // route('admin.doorToDoor_order.update')
+            Route::get('/admin/doorToDoor_order/{doorToDoorOrder}/show', 'DoorToDoorOrderController@show')
+                ->name('admin.doorToDoor_order.show'); // route('admin.doorToDoor_order.show')
+            Route::delete('/admin/doorToDoor_order/{doorToDoorOrder}/delete', 'DoorToDoorOrderController@delete')
+                ->name('admin.doorToDoor_order.delete'); // route('admin.doorToDoor_order.delete')
 
 
             // Door To Door Service
@@ -54,11 +64,11 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.doorToDoor_service.create'); // route('admin.doorToDoor_service.create')
             Route::post('/admin/doorToDoor_service/store', 'DoorToDoorServiceController@store')
                 ->name('admin.doorToDoor_service.store'); // route('admin.doorToDoor_service.store')
-            Route::get('/admin/doorToDoor_service/{id}/show', 'DoorToDoorServiceController@show')
+            Route::get('/admin/doorToDoor_service/{doorToDoorService}/show', 'DoorToDoorServiceController@show')
                 ->name('admin.doorToDoor_service.show'); // route('admin.doorToDoor_service.show')
-            Route::get('/admin/doorToDoor_service/{id}/route', 'DoorToDoorServiceController@route')
+            Route::get('/admin/doorToDoor_service/{doorToDoorService}/route', 'DoorToDoorServiceController@route')
                 ->name('admin.doorToDoor_service.route'); // route('admin.doorToDoor_service.route')
-            Route::get('/admin/doorToDoor_service/{id}/search_route', 'DoorToDoorServiceController@search_route')
+            Route::get('/admin/doorToDoor_service/{doorToDoorService}/search_route', 'DoorToDoorServiceController@search_route')
                 ->name('admin.doorToDoor_service.search_route'); // route('admin.doorToDoor_service.search_route')
 
             // Cars

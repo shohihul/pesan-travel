@@ -14,6 +14,7 @@ use App\Repositories\UserRepository;
 use App\Http\Requests\DoorToDoorServiceStoreRequest;
 
 use App\Models\Regencie;
+use App\Models\DoorToDoorService;
 
 class DoorToDoorServiceController extends Controller
 {
@@ -95,10 +96,10 @@ class DoorToDoorServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($doorToDoorService_id)
     {
         $routeStatus = $this->doorToDoorServiceRepository->getRouteStatus();
-        $data = $this->doorToDoorServiceRepository->find($id);
+        $data = $this->doorToDoorServiceRepository->find($doorToDoorService_id);
         $passenger = $this->doorToDoorOrderRepository->get_all();
         // return $passenger;
         return view('admin.doorToDoor_service.show',
@@ -110,18 +111,17 @@ class DoorToDoorServiceController extends Controller
         );
     }
 
-    public function route($id)
+    public function route(DoorToDoorService $doorToDoorService)
     {
-        $service = $this->doorToDoorServiceRepository->find($id);
+        $doorToDoorService_id = $doorToDoorService->id;
 
-        if ($service['route_status'] == 0) {
-            return redirect(route('admin.doorToDoor_service.show', $id));
+        if ($doorToDoorService['route_status'] == 0) {
+            return redirect(route('admin.doorToDoor_service.show', $doorToDoorService_id));
         }
 
-        $passenger = $this->doorToDoorOrderRepository->find_door_to_door_service_id($id);
-        $total_passenger = count($passenger);
-        $passenger_orderBy_pickup =  $this->doorToDoorOrderRepository->passenger_orderBy_pickup($id);
-        $passenger_orderBy_dropoff =  $this->doorToDoorOrderRepository->passenger_orderBy_dropoff($id);
+        $passenger = $this->doorToDoorOrderRepository->find_door_to_door_service_id($doorToDoorService_id);
+        $passenger_orderBy_pickup =  $this->doorToDoorOrderRepository->passenger_orderBy_pickup($doorToDoorService_id);
+        $passenger_orderBy_dropoff =  $this->doorToDoorOrderRepository->passenger_orderBy_dropoff($doorToDoorService_id);
 
         $pickup_route = [];
         for ($i=0; $i < count($passenger_orderBy_pickup)-1; $i++) { 
@@ -139,7 +139,7 @@ class DoorToDoorServiceController extends Controller
             compact(
                 'pickup_route',
                 'dropoff_route',
-                'service',
+                'doorToDoorService',
                 'passenger'
             )
         );
@@ -179,15 +179,15 @@ class DoorToDoorServiceController extends Controller
         //
     }
 
-    public function search_route($id)
+    public function search_route(DoorToDoorService $doorToDoorService)
     {
-        $service = $this->doorToDoorServiceRepository->find($id);
+        $doorToDoorService_id = $doorToDoorService->id;
 
-        if ($service['route_status'] == 1) {
-            return redirect(route('admin.doorToDoor_service.route', $id));
+        if ($doorToDoorService['route_status'] == 1) {
+            return redirect(route('admin.doorToDoor_service.route', $doorToDoorService_id));
         }
 
-        $passenger = $this->doorToDoorOrderRepository->find_door_to_door_service_id($id);
+        $passenger = $this->doorToDoorOrderRepository->find_door_to_door_service_id($doorToDoorService_id);
         $total_passenger = count($passenger);
 
         // Make distance matrix
@@ -267,8 +267,8 @@ class DoorToDoorServiceController extends Controller
             $this->doorToDoorOrderRepository->update_sequence($passenger_updated, $pickup, $dropoff);
         }
 
-        $this->doorToDoorServiceRepository->route_status_available($service);
+        $this->doorToDoorServiceRepository->route_status_available($doorToDoorService);
 
-        return redirect(route('admin.doorToDoor_service.route', $id));
+        return redirect(route('admin.doorToDoor_service.route', $doorToDoorService_id));
     }
 }

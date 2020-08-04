@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use App\Repositories\DoorToDoorServiceRepository;
+use App\Repositories\DoorToDoorOrderRepository;
 
 use App\Http\Requests\DoorToDoorOrderStoreRequest;
-use App\Repositories\DoorToDoorOrderRepository;
+use App\Http\Requests\DoorToDoorOrderUpdateRequest;
+
+use App\Models\DoorToDoorOrder;
 
 class DoorToDoorOrderController extends Controller
 {
@@ -34,7 +37,18 @@ class DoorToDoorOrderController extends Controller
      */
     public function index()
     {
-        //
+        $per_page = 10;
+        $paymentStatus = $this->doorToDoorOrderRepository->getPaymentStatus();
+        $locationStatus = $this->doorToDoorOrderRepository->getLocationStatus();
+        $orders = $this->doorToDoorOrderRepository->get_paginate($per_page);
+
+        return view('admin.doorToDoor_order.index',
+            compact(
+                'orders',
+                'paymentStatus',
+                'locationStatus'
+            )
+        );
     }
 
     /**
@@ -63,12 +77,14 @@ class DoorToDoorOrderController extends Controller
      */
     public function store(DoorToDoorOrderStoreRequest $request)
     {
-        $service = $request->get('door_to_door_service_id');
-        $this->doorToDoorOrderRepository->store($request);
-        $this->doorToDoorServiceRepository->route_status_unavailable($service);
-        return $service;
+        $doorToDoorService_id = $request->get('door_to_door_service_id');
+        $doorToDoorService = $this->doorToDoorServiceRepository->find($doorToDoorService_id);
 
-        return redirect(route('admin.doorToDoor_service.show', $service));
+        $this->doorToDoorOrderRepository->store($request);
+        $this->doorToDoorServiceRepository->route_status_unavailable($doorToDoorService);
+        
+
+        return redirect(route('admin.doorToDoor_service.show', $doorToDoorService_id));
     }
 
     /**
@@ -77,9 +93,20 @@ class DoorToDoorOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(DoorToDoorOrder $doorToDoorOrder)
     {
-        //
+        $paymentStatus = $this->doorToDoorOrderRepository->getPaymentStatus();
+        $locationStatus = $this->doorToDoorOrderRepository->getLocationStatus();
+        $doorToDoorService_id = $doorToDoorOrder->door_to_door_service_id;
+        $service = $this->doorToDoorServiceRepository->find($doorToDoorService_id);
+        return view('admin.doorToDoor_order.show',
+            compact(
+                'doorToDoorOrder',
+                'service',
+                'paymentStatus',
+                'locationStatus'
+            )
+        );
     }
 
     /**
@@ -88,9 +115,16 @@ class DoorToDoorOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(DoorToDoorOrder $doorToDoorOrder)
     {
-        //
+        $doorToDoorService_id = $doorToDoorOrder->door_to_door_service_id;
+        $service = $this->doorToDoorServiceRepository->find($doorToDoorService_id);
+        return view('admin.doorToDoor_order.edit',
+            compact(
+                'doorToDoorOrder',
+                'service'
+            )
+        );
     }
 
     /**
@@ -100,9 +134,11 @@ class DoorToDoorOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DoorToDoorOrderUpdateRequest $request, DoorToDoorOrder $doorToDoorOrder)
     {
-        //
+        $this->doorToDoorOrderRepository->update($request, $doorToDoorOrder);
+
+        return redirect(route('admin.doorToDoor_order.show', $doorToDoorOrder->id));
     }
 
     /**
@@ -111,8 +147,10 @@ class DoorToDoorOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(DoorToDoorOrder $doorToDoorOrder)
     {
-        //
+        $this->doorToDoorOrderRepository->delete($doorToDoorOrder);
+
+        return redirect(route('admin.doorToDoor_order.index'));
     }
 }

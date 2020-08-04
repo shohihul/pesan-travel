@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\DoorToDoorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\DoorToDoorService;
 
 class DoorToDoorServiceRepository
 {
@@ -15,7 +15,7 @@ class DoorToDoorServiceRepository
 	    $this->model = $model;
     }
 
-    public function find($id)
+    public function find($doorToDoorService_id)
 	{
 		return $this->model->find($id);
     }
@@ -52,7 +52,7 @@ class DoorToDoorServiceRepository
         DB::beginTransaction();
 
         try {
-            $this->model->create($request->all());
+            $this->model->create([]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -60,16 +60,30 @@ class DoorToDoorServiceRepository
         }
     }
 
-    public function route_status_available(DoorToDoorService $service)
+    public function route_status_available(DoorToDoorService $doorToDoorService)
     {
-        $service->route_status = 1;
-        $service->save();
+        DB::beginTransaction();
+
+        try {
+            $doorToDoorService->update(['route_status' => 1]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e);
+        }
     }
 
-    public function route_status_unavailable(DoorToDoorService $service)
+    public function route_status_unavailable(DoorToDoorService $doorToDoorService)
     {
-        $service->route_status = 0;
-        $service->save();
+        DB::beginTransaction();
+
+        try {
+            $doorToDoorService->update(['route_status' => 0]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e);
+        }
     }
 
     public function search_route($distance_matrix, $total_passenger)

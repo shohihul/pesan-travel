@@ -35,7 +35,7 @@
           <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-rv"></i></i> <span>Door to Door</span></a>
           <ul class="dropdown-menu">
             <li @if ($pageSlug == '') class="active" @endif>
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{{route('admin.doorToDoor_order.index')}}">
                 <i class="far fa-list-ul"></i> index
               </a>
             </li>

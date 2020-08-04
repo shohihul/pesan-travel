@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DoorToDoorService extends Model
 {
     protected $fillable = [
-        'car_id', 'origin_id', 'destination_id', 'price', 'start', 'finish'
+        'car_id', 'origin_id', 'destination_id', 'price', 'start', 'finish', 'route_status'
     ];
 
     public static function getRouteStatus(){

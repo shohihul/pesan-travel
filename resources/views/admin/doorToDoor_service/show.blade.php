@@ -4,6 +4,9 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
+            <div class="section-header-back">
+                <a href="javascript:history.go(-1)" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            </div>
             <h1>Door To Door Service</h1>
         </div>
 

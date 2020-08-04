@@ -26,7 +26,7 @@ class DoorToDoorOrdersTableSeeder extends Seeder
         ]);
 
         DB::table('door_to_door_orders')->insert([
-            'customer_id' => '8',
+            'customer_id' => '4',
             'door_to_door_service_id' => '1',
             'pick_up_point' => '-7.040759401491945,112.72930256644659',
             'drop_off_point' => '-3.813376401627553,102.26901341686613',
@@ -39,7 +39,7 @@ class DoorToDoorOrdersTableSeeder extends Seeder
         ]);
 
         DB::table('door_to_door_orders')->insert([
-            'customer_id' => '7',
+            'customer_id' => '5',
             'door_to_door_service_id' => '1',
             'pick_up_point' => '-7.029044183687205,112.75955200195312',
             'drop_off_point' => '7.028682144719907,112.747642993927',
