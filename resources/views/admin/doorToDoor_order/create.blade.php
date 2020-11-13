@@ -23,8 +23,8 @@
                         <div class="pl-lg-4">
                             <input name="door_to_door_service_id" type="number" class="form-control" value="{{$service->id}}" hidden>
                             <input type="number" name="amount" id="input_amount" value="{{$service->price}}" hidden>
-                            <input type="text" name="pick_up_point" id="input-pickUp-point" hidden>
-                            <input type="text" name="drop_off_point" id="input-dropOff-point" hidden>
+                            <input type="text" name="pickup_point" id="input-pickUp-point" hidden>
+                            <input type="text" name="dropoff_point" id="input-dropOff-point" hidden>
 
                             <div class="form-group">
                                 <label>Akun Penumpang

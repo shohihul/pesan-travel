@@ -18,11 +18,12 @@ class CreateDoorToDoorServicesTable extends Migration
             $table->integer('car_id');
             $table->integer('origin_id');
             $table->integer('destination_id');
+            $table->integer('driver_id');
             $table->integer('price');
             $table->dateTime('start');
             $table->dateTime('finish')->nullable();
-            $table->integer('route_status')->default('0');
-            $table->string('status')->default('scheduled');
+            $table->boolean('route_ready')->default(false);
+            $table->string('status')->default('open');
             $table->timestamps();
         });
     }

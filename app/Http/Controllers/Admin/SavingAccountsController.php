@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SavingAccount;
 use App\Repositories\SavingAccountRepository;
 use App\Http\Requests\SavingAccountStoreRequest;
 
@@ -52,7 +53,11 @@ class SavingAccountsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->savingAccountRepository->store($request);
+        $logo = $request->file('logo');
+        $fileName = 'bank-' . $request->bank_account . '.' . $logo->getClientOriginalExtension();
+
+        $this->savingAccountRepository->store($request, $fileName);
+        $this->savingAccountRepository->fileUpload($logo, $fileName);
 
         return redirect(route('admin.saving_account.index'));
     }
@@ -76,7 +81,12 @@ class SavingAccountsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $savingAccount = $this->savingAccountRepository->find($id);
+        return view('admin.savingAccount.edit',
+            compact(
+                'savingAccount'
+            )
+        );
     }
 
     /**
@@ -86,9 +96,11 @@ class SavingAccountsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SavingAccount $savingAccount)
     {
-        //
+        $this->savingAccountRepository->update($request, $savingAccount);
+
+        return redirect(route('admin.saving_account.index'));
     }
 
     /**

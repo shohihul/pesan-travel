@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class DoorToDoorService extends Model
 {
     protected $fillable = [
-        'car_id', 'origin_id', 'destination_id', 'price', 'start', 'finish', 'route_status'
+        'car_id', 'origin_id', 'destination_id', 'price', 'start', 'finish', 'route_ready'
     ];
 
-    public static function getRouteStatus(){
+    public function getStatus()
+    {
         return [
-            1 => 'Tersedia',
-            0 => 'Belum Tersedia'
+            'open' => 'Buka',
+            'close' => 'Tutup',
+            'on_travel' => 'Dalam Perjalanan',
+            'done' => 'Selesai'
         ];
     }
 
@@ -27,5 +30,14 @@ class DoorToDoorService extends Model
 
     public function car() {
         return $this->belongsTo(Car::class);
+    }
+
+    public function doorToDoorOrder() {
+        return $this->hasMany(DoorToDoorOrder::class);
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo('App\User', 'driver_id');
     }
 }

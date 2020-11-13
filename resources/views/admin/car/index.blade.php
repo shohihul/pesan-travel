@@ -24,6 +24,7 @@
                                 <th>Merk - Tipe</th>
                                 <th>Foto</th>
                                 <th>Kapasitas</th>
+                                <th>Action</th>
                             </tr>
                             @foreach ($car as $row)
                             <tr>
@@ -34,6 +35,14 @@
                                     </div>
                                 </td>
                                 <td>{{$row->capacity}}</td>
+                                <td>
+                                    <a class="btn btn-info" href="{{route('admin.car.edit', $row->id)}}">Ubah</a>
+                                    <form action="{{route('admin.car.delete', $row->id)}}" method="POST" style="display: inline-block;">
+                                        @csrf()
+                                        @method('delete')
+                                        <input type="submit" value="Hapus" class="btn btn-danger">
+                                    </form>
+                                </td>
                             </tr>
                             @endforeach
                             </table>

@@ -26,8 +26,8 @@ class DoorToDoorOrderStoreRequest extends FormRequest
         return [
             'customer_id' => ['required', 'numeric'],
             'door_to_door_service_id' => ['required', 'numeric'],
-            'pick_up_point' => ['required'],
-            'drop_off_point' => ['required'],
+            'pickup_point' => ['required'],
+            'dropoff_point' => ['required'],
             'quantity' => ['required', 'numeric'],
             'amount' => ['required', 'numeric'],
         ];

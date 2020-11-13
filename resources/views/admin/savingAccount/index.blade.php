@@ -21,6 +21,7 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-md">
                             <tr>
+                                <th>Logo</th>
                                 <th>Bank</th>
                                 <th>Nama Rekening</th>
                                 <th>Nomor Rekening</th>
@@ -28,6 +29,11 @@
                             </tr>
                             @foreach ($savingAccount as $row)
                             <tr>
+                                <td>
+                                    <div class="gallery">
+                                        <div class="gallery-item" data-image="{{ asset('assets/img/bank/' . $row->logo) }}" data-title="{{$row->bank_account}}"></div>
+                                    </div>
+                                </td>
                                 <td>{{$row->bank_account}}</td>
                                 <td>{{$row->account_name}}</td>
                                 <td>{{$row->account_number}}</td>
@@ -35,9 +41,8 @@
                                     <form action="{{route('admin.saving_account.destroy', $row->id)}}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit"  class="btn btn-danger">
-                                            Hapus
-                                        </button>
+                                        <a class="btn btn-info" href="{{route('admin.saving_account.edit', $row->id)}}">Ubah</a>
+                                        <input type="submit" value="Hapus" class="btn btn-danger">
                                     </form>
                                 </td>
                             </tr>

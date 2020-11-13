@@ -14,14 +14,14 @@
                         <h4>Form Tambah Rekening Pembayaran</h4>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{route('admin.saving_account.store')}}" autocomplete="off">
+                        <form method="post" action="{{route('admin.saving_account.store')}}" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <div class="pl-lg-4">
                                 <div class="form-group">
                                     <label>Bank
                                             <span class="text-danger">*</span>
                                     </label>
-                                    <input name="bank_account" type="text" placeholder="Misal : Bank Rakyat Indonesia (BRI)" class="form-control" required="" autofocus>
+                                    <input name="bank_account" type="text" placeholder="Misal : BRI" class="form-control" required="" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <label>Nama Rekening
@@ -35,6 +35,16 @@
                                             <span class="text-danger">*</span>
                                     </label>
                                     <input name="account_number" type="number" placeholder="Nomor Rekening" class="form-control" required="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Logo Bank (.svg)
+                                            <span class="text-danger">*</span>
+                                    </label>
+                                    <div id="image-preview" class="image-preview">
+                                        <label for="image-upload" id="image-label">Choose File</label>
+                                        <input class="form-control" type="file" name="logo" id="image-upload" required="">
+                                    </div>
                                 </div>
 
                                 <div class="text-right">
@@ -51,4 +61,9 @@
         </div>
     </section>
 </div>
+@endsection
+
+@section('script')
+<script src="{{ asset('stisla/modules/upload-preview/assets/js/jquery.uploadPreview.min.js') }}"></script>
+<script src="{{ asset('js/uploadPreview.js') }}"></script>
 @endsection

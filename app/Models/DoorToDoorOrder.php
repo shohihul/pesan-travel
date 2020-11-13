@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class DoorToDoorOrder extends Model
 {
     protected $fillable = [
-        'customer_id', 'door_to_door_service_id', 'pick_up_point', 'drop_off_point', 'location_point_status', 'location_point_note', 'quantity', 'payment_status', 'amount'
+        'customer_id',
+        'door_to_door_service_id',
+        'pickup_point',
+        'dropoff_point',
+        'location_point_status',
+        'admin_note',
+        'location_note',
+        'quantity',
+        'status',
+        'payment_status',
     ];
-
-    public function getPaymentStatus()
-    {
-        return [
-            'new' => 'Belum Dibayar',
-            'on process' => 'Butuh DIkonfirmasi',
-            'paid off' => 'Lunas'
-        ];
-    }
 
     public function getLocationStatus()
     {
@@ -28,6 +28,16 @@ class DoorToDoorOrder extends Model
         ];
     }
 
+    public function getStatus()
+    {
+        return [
+            'new' => 'Terdaftar',
+            'cencel' => 'Dibatalkan',
+            'on_travel' => 'Dalam Perjalanan',
+            'done' => 'Selesai'
+        ];
+    }
+
     public function user() {
         return $this->belongsTo('App\User', 'customer_id');
     }
@@ -35,5 +45,10 @@ class DoorToDoorOrder extends Model
     public function doorToDoorService()
     {
         return $this->belongsTo(DoorToDoorService::class);
+    }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class);
     }
 }

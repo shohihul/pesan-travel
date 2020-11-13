@@ -63,7 +63,6 @@ class UserRepository
                 'role_id' => $request->role_id,
                 'password' => bcrypt($request->password),
                 'photo' => $fileName,
-                'api_token' => Str::random(80),
             ]);
             DB::commit();
         } catch (\Exception $e) {
@@ -75,6 +74,23 @@ class UserRepository
     public function fileUpload($photo, $fileName)
     {
         $photo->move(public_path('assets/img/photo-profile'), $fileName);
+    }
+
+    public function update(Request $request, $user, $fileName)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'photo' => $fileName,
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e);
+        }
     }
 
     public function destroy(User $user)

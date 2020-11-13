@@ -37,7 +37,7 @@
                                     <form action="{{ route('admin.user.delete', $row->id)}}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <a href="#" class="btn btn-info">Edit</a>
+                                        <a class="btn btn-info" href="{{route('admin.user.edit', $row->id)}}">Ubah</a>
                                         <button type="submit"  class="btn btn-danger">
                                             Delete
                                         </button>

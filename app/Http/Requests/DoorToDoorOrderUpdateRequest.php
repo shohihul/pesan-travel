@@ -24,8 +24,8 @@ class DoorToDoorOrderUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'pick_up_point' => ['required'],
-            'drop_off_point' => ['required'],
+            'pickup_point' => [],
+            'dropoff_point' => [],
         ];
     }
 }

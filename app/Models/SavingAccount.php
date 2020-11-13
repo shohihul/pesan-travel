@@ -10,5 +10,10 @@ class SavingAccount extends Model
         'bank_account',
         'account_name',
         'account_number',
+        'logo',
     ];
+
+    public function invoice() {
+        return $this->hasMany(Invoice::class);
+    }
 }

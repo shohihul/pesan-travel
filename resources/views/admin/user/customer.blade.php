@@ -30,12 +30,16 @@
                                 <td>{{$row->email}}</td>
                                 <td>
                                     <div class="gallery gallery-md">
-                                        <div class="gallery-item" data-image="{{ asset('assets/img/car/' . $row->photo) }}" data-title="{{$row->name}}"></div>
+                                        <div class="gallery-item" data-image="{{ asset('assets/img/photo-profile/' . $row->photo) }}" data-title="{{$row->name}}"></div>
                                     </div>
                                 </td>
                                 <td>
-                                    <button class="btn btn-info">Detail</button>
-                                    <button class="btn btn-danger">Hapus</button>
+                                    <a class="btn btn-info" href="{{route('admin.user.edit', $row->id)}}">Ubah</a>
+                                    <form action="{{route('admin.user.delete', $row->id)}}" method="POST" style="display: inline-block;">
+                                        @csrf()
+                                        @method('delete')
+                                        <input type="submit" value="Hapus" class="btn btn-danger">
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach

@@ -103,9 +103,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('admin.user.edit',
+            compact(
+                'user'
+            )
+        );
     }
 
     /**
@@ -115,9 +119,29 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $fileName;
+        if ($request->photo != null) {
+            $delete = public_path('assets/img/photo-profile/' . $user->photo);
+            if(File::exists($delete)){
+                $this->userRepository->destroyFile($user);
+            }
+
+            $photo = $request->file('photo');
+            $fileName = 'photoProfile-' . time() . '.' . $photo->getClientOriginalExtension();
+            $this->userRepository->fileUpload($photo, $fileName);
+        } else {
+            $fileName = $user->photo;
+        }
+
+        $this->userRepository->update($request, $user, $fileName);
+
+        if ($user->role_id == 3) {
+            return redirect(route('admin.customer.index'));
+        } else {
+            return redirect(route('admin.driver.index'));
+        }
     }
 
     /**
@@ -129,15 +153,16 @@ class UserController extends Controller
     public function delete(User $user)
     {
         $file = public_path('assets/img/photo-profile/' . $user->photo);
-
         $this->userRepository->destroy($user);
 
         if(File::exists($file)){
-
             $this->userRepository->destroyFile($user);
-
         }
 
-        return redirect(route('admin.dashboard'));
+        if ($user->role_id == 3) {
+            return redirect(route('admin.customer.index'));
+        } else {
+            return redirect(route('admin.driver.index'));
+        }
     }
 }

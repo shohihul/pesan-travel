@@ -22,8 +22,8 @@
                         @csrf
                         @method ('put')
                         <div class="pl-lg-4">
-                            <input type="text" name="pick_up_point" id="input-pickUp-point" value="{{$doorToDoorOrder->pick_up_point}}" hidden>
-                            <input type="text" name="drop_off_point" id="input-dropOff-point" value="{{$doorToDoorOrder->drop_off_point}}" hidden>
+                            <input type="text" name="pickup_point" id="input-pickUp-point" value="{{$doorToDoorOrder->pickup_point}}" hidden>
+                            <input type="text" name="dropoff_point" id="input-dropOff-point" value="{{$doorToDoorOrder->dropoff_point}}" hidden>
 
                             <div class="form-group">
                                 <label>Akun Penumpang</label>
@@ -53,7 +53,7 @@
                                 <button type="submit" class="btn btn-icon icon-left btn-success">
                                     <i class="fas fa-check"></i> Simpan
                                 </button>
-                                <a href="javascript:history.go(-1)" class="btn btn-outline-secondary">Batal</a>
+                                <a href="route('admin.doorToDoor_order.update', $doorToDoorOrder->id)" class="btn btn-outline-secondary">Batal</a>
                             </div>
                         </div>
                     </form>
@@ -82,16 +82,16 @@
             zoom: 12
         });
         marker_pickUp_point = pickUp_point.addMarker({
-            position: new google.maps.LatLng( {{$doorToDoorOrder->pick_up_point}} ),
+            position: new google.maps.LatLng( {{$doorToDoorOrder->pickup_point}} ),
             title: 'Titik Penjemputan'
         });
         marker_dropOff_point = dropOff_point.addMarker({
-            position: new google.maps.LatLng( {{$doorToDoorOrder->drop_off_point}} ),
+            position: new google.maps.LatLng( {{$doorToDoorOrder->dropoff_point}} ),
             title: 'Titik Pengantaran'
         });
     
-    pickUp_point.setCenter({{$doorToDoorOrder->pick_up_point}});
-    dropOff_point.setCenter({{$doorToDoorOrder->drop_off_point}});
+    pickUp_point.setCenter({{$doorToDoorOrder->pickup_point}});
+    dropOff_point.setCenter({{$doorToDoorOrder->dropoff_point}});
 
     // when the map is clicked
     pickUp_point.addListener("click", function(e) {

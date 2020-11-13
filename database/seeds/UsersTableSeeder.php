@@ -46,6 +46,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Ramadhan',
             'email' => 'ramadhan@customer.com',
             'password' => bcrypt('secret'),
+            'api_token' => Str::random(80),
             'role_id' => '3',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -55,6 +56,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Susilo',
             'email' => 'susilo@customer.com',
             'password' => bcrypt('secret'),
+            'api_token' => Str::random(80),
             'role_id' => '3',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()

@@ -19,26 +19,54 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nama</th>
-                                <th>Status Pembayaran</th>
                                 <th>Rute Service</th>
+                                <th>Status Pembayaran</th>
                                 <th>Status Lokasi</th>
+                                <th>Status Penumpang</th>
                                 <th>Action</th>
                             </tr>
                             @foreach ($orders as $row)
                             <tr>
                                 <td>{{$row->id}}</td>
                                 <td>{{$row->user->name}}</td>
-                                <td class="text-warning mb-2">{{@$paymentStatus[$row->payment_status]}}</td>
-                                <td class="text-primary mb-2">
-                                    {{$row->doorToDoorService->origin->name}} - {{$row->doorToDoorService->destination->name}}
+                                <td>
+                                    <a href="{{route('admin.doorToDoor_service.show', $row->doorToDoorService->id)}}" class="badge badge-light">{{$row->doorToDoorService->origin->name}} - {{$row->doorToDoorService->destination->name}}</a>
                                 </td>
-                                <td class="text-warning mb-2">{{@$locationStatus[$row->location_point_status]}}</td>
+                                <td>
+                                @if ($row->invoice->status == "new")
+                                    <span class="text-secondary">{{@$invoiceStatus[$row->invoice->status]}}</span>
+                                @elseif ($row->invoice->status == "on_process")
+                                    <span class="badge badge-warning">{{@$invoiceStatus[$row->invoice->status]}}</span>
+                                @elseif ($row->invoice->status == "paid_off")
+                                    <span class="badge badge-success">{{@$invoiceStatus[$row->invoice->status]}}</span>
+                                @else
+                                    <span>{{@$invoiceStatus[$row->invoice->status]}}</span>
+                                @endif
+                                </td>
+
+                                <td>
+                                @if ($row->location_point_status == "new")
+                                    <span class="badge badge-warning">{{@$locationStatus[$row->location_point_status]}}</span>
+                                @elseif ($row->location_point_status == "approved")
+                                    <span class="badge badge-success">{{@$locationStatus[$row->location_point_status]}}</span>
+                                @else
+                                    <span class="badge badge-light">{{@$locationStatus[$row->location_point_status]}}</span>
+                                @endif
+                                </td>
+
+                                <td>
+                                @if ($row->status == "cencel")
+                                    <span class="text-secondary">{{@$status[$row->status]}}</span>
+                                @else
+                                    <span class="badge badge-light">{{@$status[$row->status]}}</span>
+                                @endif
+                                </td>
                                 <td>
                                     <a class="btn btn-info" href="{{route('admin.doorToDoor_order.show', $row->id)}}">Detail</a>
                                     <form action="{{route('admin.doorToDoor_order.delete', $row->id)}}" method="POST" style="display: inline-block;">
                                         @csrf()
                                         @method('delete')
-                                        <input type="submit" value="Delete" class="btn btn-danger">
+                                        <input type="submit" value="Hapus" class="btn btn-danger">
                                     </form>
                                 </td>
                             </tr>

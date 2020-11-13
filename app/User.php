@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'photo'
+        'name', 'email', 'password', 'role_id', 'photo', 'api_token'
     ];
 
     /**
@@ -45,6 +45,10 @@ class User extends Authenticatable
 
     public function doorToDoorOrder() {
         return $this->hasMany('App\Models\DoorToDoorOrder');  
+    }
+
+    public function doorToDoorService() {
+        return $this->hasMany('App\Models\DoorToDoorService');  
     }
 
     public function hasRole($roles)

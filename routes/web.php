@@ -27,6 +27,11 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
             Route::get('/admin', 'DashboardController@index')
             ->name('admin.dashboard');
 
+            // Ajax
+            Route::post('/ajax/invoice/{invoice}/update', 'InvoiceController@ajax_update');
+            Route::post('/ajax/doorToDoor_order/{doorToDoorOrder}/update', 'DoorToDoorOrderController@ajax_update');
+            Route::post('/ajax/doorToDoor_service/{doorToDoorService}/update', 'DoorToDoorServiceController@ajax_update');
+            
             // User
             Route::get('/admin/driver', 'UserController@driverIndex')
                 ->name('admin.driver.index'); // route('admin.driver.index')
@@ -36,9 +41,15 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.user.create'); // route('admin.user.create')
             Route::post('/admin/user/store', 'UserController@store')
                 ->name('admin.user.store'); // route('admin.user.store')
+            Route::delete('/admin/customer/{user}/delete', 'UserController@deleteCustomer')
+                ->name('admin.customer.delete'); // route('admin.customer.delete')
             Route::delete('/admin/user/{user}/delete', 'UserController@delete')
                 ->name('admin.user.delete'); // route('admin.user.delete')
-
+            Route::get('/admin/user/{user}/edit', 'UserController@edit')
+                ->name('admin.user.edit');
+            Route::put('/admin/user/{user}/update', 'UserController@update')
+                ->name('admin.user.update');
+                
             // Door To Door Order
             Route::get('/admin/doorToDoor_order/index', 'DoorToDoorOrderController@index')
                 ->name('admin.doorToDoor_order.index'); // route('admin.doorToDoor_order.index')
@@ -46,15 +57,14 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.doorToDoor_order.create'); // route('admin.doorToDoor_order.create')
             Route::post('/admin/doorToDoor_order/store', 'DoorToDoorOrderController@store')
                 ->name('admin.doorToDoor_order.store'); // route('admin.doorToDoor_order.store')
-            Route::get('/admin/doorToDoor_order/{doorToDoorOrder}/edit', 'DoorToDoorOrderController@edit')
-                ->name('admin.doorToDoor_order.edit'); // route('admin.doorToDoor_order.edit')
+            Route::get('/admin/doorToDoor_order/{doorToDoorOrder}/location_edit', 'DoorToDoorOrderController@location_edit')
+                ->name('admin.doorToDoor_order.location_edit'); // route('admin.doorToDoor_order.location_edit')
             Route::put('/admin/doorToDoor_order/{doorToDoorOrder}/update', 'DoorToDoorOrderController@update')
                 ->name('admin.doorToDoor_order.update'); // route('admin.doorToDoor_order.update')
             Route::get('/admin/doorToDoor_order/{doorToDoorOrder}/show', 'DoorToDoorOrderController@show')
                 ->name('admin.doorToDoor_order.show'); // route('admin.doorToDoor_order.show')
             Route::delete('/admin/doorToDoor_order/{doorToDoorOrder}/delete', 'DoorToDoorOrderController@delete')
                 ->name('admin.doorToDoor_order.delete'); // route('admin.doorToDoor_order.delete')
-
 
             // Door To Door Service
             Route::get('/admin/doorToDoor_service/scheduled_index', 'DoorToDoorServiceController@scheduled_index')
@@ -78,6 +88,12 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.car.create'); // route('admin.car.create')
             Route::post('/admin/cars/store', 'CarController@store')
                 ->name('admin.car.store'); // route('admin.car.store')
+            Route::get('/admin/cars/{car}/edit', 'CarController@edit')
+                ->name('admin.car.edit'); // route('admin.car.edit')
+            Route::put('/admin/cars/{car}/update', 'CarController@update')
+                ->name('admin.car.update'); // route('admin.car.update')
+            Route::delete('/admin/cars/{car}/delete', 'CarController@delete')
+                ->name('admin.car.delete'); // route('admin.car.delete')
 
             // Saving Accountd
             Route::get('/admin/saving_account', 'SavingAccountsController@index')
@@ -88,6 +104,10 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.saving_account.store'); // route('admin.saving_account.store')
             Route::delete('/admin/saving_account/{id}/destroy', 'SavingAccountsController@destroy')
                 ->name('admin.saving_account.destroy'); // route('admin.saving_account.destroy')
+            Route::get('/admin/saving_account/{id}/edit', 'SavingAccountsController@edit')
+                ->name('admin.saving_account.edit');
+            Route::put('/admin/saving_account/{savingAccount}/update', 'SavingAccountsController@update')
+                ->name('admin.saving_account.update');
 
         });
         

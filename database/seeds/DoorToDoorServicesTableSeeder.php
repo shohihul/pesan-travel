@@ -22,5 +22,27 @@ class DoorToDoorServicesTableSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+
+        DB::table('door_to_door_services')->insert([
+            'car_id' => '1',
+            'origin_id' => '42',
+            'destination_id' => '51',
+            'price' => '15000',
+            'start' => '2020-09-24 12:00:00',
+            'status' => 'scheduled',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        DB::table('door_to_door_services')->insert([
+            'car_id' => '1',
+            'origin_id' => '42',
+            'destination_id' => '51',
+            'price' => '15000',
+            'start' => '2020-09-12 12:00:00',
+            'status' => 'scheduled',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
     }
 }

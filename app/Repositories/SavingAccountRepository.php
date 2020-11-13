@@ -16,17 +16,32 @@ class SavingAccountRepository
 	    $this->model = $model;
     }
 
+    public function find($id)
+	{
+		return $this->model->find($id);
+    }
+
     public function get_all()
     {
         return $this->model->get();
     }
 
-    public function store(Request $request)
+    public function get_bank(Type $var = null)
+    {
+        return $this->model->select('id', 'bank_account', 'logo')->get();
+    }
+
+    public function store(Request $request, $fileName)
     {
         DB::beginTransaction();
 
         try {
-            $this->model->create($request->all());
+            $this->model->create([
+                'bank_account' => $request->bank_account,
+                'account_number' => $request->account_number,
+                'account_name' => $request->account_name,
+                'logo' => $fileName,
+            ]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -40,6 +55,24 @@ class SavingAccountRepository
 
         try {
             $this->model->where('id', $id)->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e);
+        }
+    }
+
+    public function fileUpload($photo, $fileName)
+    {
+        $photo->move(public_path('assets/img/bank'), $fileName);
+    }
+
+    public function update(Request $request, SavingAccount $savingAccount)
+    {
+        DB::beginTransaction();
+
+        try {
+            $savingAccount->update($request->all());
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

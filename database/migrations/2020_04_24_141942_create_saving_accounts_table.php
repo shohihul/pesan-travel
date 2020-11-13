@@ -18,6 +18,7 @@ class CreateSavingAccountsTable extends Migration
             $table->string('bank_account');
             $table->string('account_number');
             $table->string('account_name');
+            $table->string('logo');
             $table->timestamps();
         });
     }

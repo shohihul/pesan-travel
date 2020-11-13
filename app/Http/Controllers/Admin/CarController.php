@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Car;
 use App\Http\Requests\CarStoreRequest;
 use App\Repositories\CarRepository;
+use File;
 
 class CarController extends Controller
 {
@@ -78,9 +80,13 @@ class CarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Car $car)
     {
-        //
+        return view('admin.car.edit',
+            compact(
+                'car'
+            )
+        );
     }
 
     /**
@@ -90,9 +96,11 @@ class CarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Car $car)
     {
-        //
+        $this->carRepository->update($request, $car);
+
+        return redirect(route('admin.car.index'));
     }
 
     /**
@@ -101,8 +109,15 @@ class CarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Car $car)
     {
-        //
+        $file = public_path('assets/img/car/' . $car->photo);
+        $this->carRepository->destroy($car);
+
+        if(File::exists($file)){
+            $this->carRepository->destroyFile($car);
+        }
+
+        return redirect(route('admin.car.index'));
     }
 }

@@ -19,7 +19,29 @@ class DoorToDoorOrderRepository
     public function find($doorToDoorOrder_id)
 	{
 		return $this->model->find($doorToDoorOrder_id);
-	}
+    }
+    
+    public function get_by_user(Request $request)
+    {
+        return $this->model->where('customer_id', $request->user()->id)->get();
+    }
+
+    public function get_orders(Request $request)
+    {
+        return $this->model->where('status', 'on_travel')
+            ->where('customer_id', $request->user()->id)
+            ->orWhere('status', 'new')
+            ->where('customer_id', $request->user()->id)
+            ->get();
+    }
+
+    public function get_history(Request $request)
+    {
+        return $this->model->where('status', 'cencel')
+            ->orWhere('status', 'done')
+            ->where('customer_id', $request->user()->id)
+            ->get();
+    }
 
     public function get_all()
     {
@@ -33,22 +55,49 @@ class DoorToDoorOrderRepository
 
     public function find_door_to_door_service_id($doorToDoorService_id)
     {
-        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)->orderBy('id', 'asc')->get();
+        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)
+            ->orderBy('id', 'asc')
+            ->get();
+    }
+
+    public function bookers($doorToDoorService_id)
+    {
+        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)
+            ->where('location_point_status', '<>', 'approved')
+            ->orWhereHas('invoice', function($invoice) {
+                $invoice->where('status', '<>', 'paid_off');
+            })
+            ->where('door_to_door_service_id', $doorToDoorService_id)
+            ->orderBy('id', 'asc')
+            ->get();
+    }
+
+    public function passenger($doorToDoorService_id)
+    {
+        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)
+            ->where('status', '<>', 'cencel')
+            ->where('location_point_status', 'approved')
+            ->whereHas('invoice', function($invoice) {
+                $invoice->where('status', 'paid_off');
+            })
+            ->orderBy('id', 'asc')
+            ->get();
     }
 
     public function passenger_orderBy_pickup($doorToDoorService_id)
     {
-        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)->whereNotNull('pickup_sequence')->orderBy('pickup_sequence', 'asc')->get();
+        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)
+            ->whereNotNull('pickup_sequence')
+            ->orderBy('pickup_sequence', 'asc')
+            ->get();
     }
 
     public function passenger_orderBy_dropoff($doorToDoorService_id)
     {
-        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)->whereNotNull('dropoff_sequence')->orderBy('dropoff_sequence', 'asc')->get();
-    }
-
-    public function getPaymentStatus()
-    {
-        return $this->model->getPaymentStatus();
+        return $this->model->where('door_to_door_service_id', $doorToDoorService_id)
+            ->whereNotNull('dropoff_sequence')
+            ->orderBy('dropoff_sequence', 'asc')
+            ->get();
     }
 
     public function getLocationStatus()
@@ -56,13 +105,43 @@ class DoorToDoorOrderRepository
         return $this->model->getLocationStatus();
     }
 
+    public function getStatus()
+    {
+       return $this->model->getStatus(); 
+    }
+
+    public function get_qty_confirmed($doorToDoorService_id)
+    {
+        return $this->model
+            ->where('door_to_door_service_id', $doorToDoorService_id)
+            ->whereHas('invoice', function($invoice) {
+                $invoice->where('status', 'paid_off');
+            })
+            ->sum('quantity');
+    }
+
     public function store(DoorToDoorOrderStoreRequest $request)
     {
         DB::beginTransaction();
 
         try {
-            $this->model->create($request->all());
+            $order = $this->model->create($request->all());
             DB::commit();
+            return $order;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e);
+        }
+    }
+
+    public function api_store(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $order = $this->model->create($request->all());
+            DB::commit();
+            return $order;
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception($e);
@@ -90,7 +169,6 @@ class DoorToDoorOrderRepository
         try {
             $doorToDoorOrder->delete();
             DB::commit();
-            return $doorToDoorOrder;
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception($e);
