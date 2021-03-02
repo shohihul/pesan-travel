@@ -79,7 +79,7 @@
                 <h4>Lokasi</h4>
                 @if ($doorToDoorOrder->location_point_status == 'new' or $doorToDoorOrder->location_point_status == 'rejected')
                     <div class="card-header-action">
-                        <a href="{{route('admin.doorToDoor_order.location_edit', $doorToDoorOrder->id)}}" class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Ubah Status Lokasi</a>
+                        <a href="{{route('admin.doorToDoor_order.location_edit', $doorToDoorOrder->id)}}" class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Ubah Lokasi</a>
                     </div>
                 @endif
             </div>

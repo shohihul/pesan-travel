@@ -110,7 +110,6 @@ class DoorToDoorServiceController extends Controller
         $locationStatus = $this->doorToDoorOrderRepository->getLocationStatus();
         $passengerStatus = $this->doorToDoorOrderRepository->getStatus();
         $serviceStatus = $this->doorToDoorServiceRepository->getStatus();
-        error_log('Some message here.');
         
         // return $passenger;
         return view('admin.doorToDoor_service.show',
@@ -201,6 +200,219 @@ class DoorToDoorServiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function permutation_route(DoorToDoorService $doorToDoorService)
+    {
+        $doorToDoorService_id = $doorToDoorService->id;
+        $passenger = $this->doorToDoorOrderRepository->passenger($doorToDoorService_id);
+        $total_passenger = count($passenger);
+
+        return $passenger;
+
+        $combination = [
+            [0,1],
+            [0,2],
+            [0,3],
+            [0,4],
+            [1,2],
+            [1,3],
+            [1,4],
+            [2,3],
+            [2,4],
+            [3,4],
+            [1,0],
+            [2,0],
+            [3,0],
+            [4,0],
+            [2,1],
+            [3,1],
+            [4,1],
+            [3,2],
+            [4,2],
+            [4,3],
+        ];
+        // return array_search([1,0], $combination);
+
+        $distance_combination = [];
+
+        for ($i=0; $i < count($combination); $i++) { 
+            $start = $passenger[$combination[$i][0]]['pickup_point'];
+            $end = $passenger[$combination[$i][1]]['pickup_point'];
+
+            $dataJson = file_get_contents(
+                "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="
+                .$start
+                ."&destinations=".$end
+                ."&key=".env('GOOGLE_MAP_KEY')
+            );
+
+            $data = json_decode($dataJson,true);
+            $distance_value = $data['rows'][0]['elements'][0]['distance']['value'];
+
+            $distance_combination[$i] = round($distance_value/1000, 1);
+        }
+
+        $permutation = [
+            [0,1,2,3,4],
+            [1,0,2,3,4],
+            [2,0,1,3,4],
+            [0,2,1,3,4],
+            [1,2,0,3,4],
+            [2,1,0,3,4],
+            [2,1,3,0,4],
+            [1,2,3,0,4],
+            [3,2,1,0,4],
+            [2,3,1,0,4],
+            [1,3,2,0,4],
+            [3,1,2,0,4],
+            [3,0,2,1,4],
+            [0,3,2,1,4],
+            [2,3,0,1,4],
+            [3,2,0,1,4],
+            [0,2,3,1,4],
+            [2,0,3,1,4],
+            [1,0,3,2,4],
+            [0,1,3,2,4],
+            [3,1,0,2,4],
+            [1,3,0,2,4],
+            [0,3,1,2,4],
+            [3,0,1,2,4],
+            [4,0,1,2,3],
+            [0,4,1,2,3],
+            [1,4,0,2,3],
+            [4,1,0,2,3],
+            [0,1,4,2,3],
+            [1,0,4,2,3],
+            [1,0,2,4,3],
+            [0,1,2,4,3],
+            [2,1,0,4,3],
+            [1,2,0,4,3],
+            [0,2,1,4,3],
+            [2,0,1,4,3],
+            [2,4,1,0,3],
+            [4,2,1,0,3],
+            [1,2,4,0,3],
+            [2,1,4,0,3],
+            [4,1,2,0,3],
+            [1,4,2,0,3],
+            [0,4,2,1,3],
+            [4,0,2,1,3],
+            [2,0,4,1,3],
+            [0,2,4,1,3],
+            [4,2,0,1,3],
+            [2,4,0,1,3],
+            [3,4,0,1,2],
+            [4,3,0,1,2],
+            [0,3,4,1,2],
+            [3,0,4,1,2],
+            [4,0,3,1,2],
+            [0,4,3,1,2],
+            [0,4,1,3,2],
+            [4,0,1,3,2],
+            [1,0,4,3,2],
+            [0,1,4,3,2],
+            [4,1,0,3,2],
+            [1,4,0,3,2],
+            [1,3,0,4,2],
+            [3,1,0,4,2],
+            [0,1,3,4,2],
+            [1,0,3,4,2],
+            [3,0,1,4,2],
+            [0,3,1,4,2],
+            [4,3,1,0,2],
+            [3,4,1,0,2],
+            [1,4,3,0,2],
+            [4,1,3,0,2],
+            [3,1,4,0,2],
+            [1,3,4,0,2],
+            [2,3,4,0,1],
+            [3,2,4,0,1],
+            [4,2,3,0,1],
+            [2,4,3,0,1],
+            [3,4,2,0,1],
+            [4,3,2,0,1],
+            [4,3,0,2,1],
+            [3,4,0,2,1],
+            [0,4,3,2,1],
+            [4,0,3,2,1],
+            [3,0,4,2,1],
+            [0,3,4,2,1],
+            [0,2,4,3,1],
+            [2,0,4,3,1],
+            [4,0,2,3,1],
+            [0,4,2,3,1],
+            [2,4,0,3,1],
+            [4,2,0,3,1], ///////////
+            [3,2,0,4,1],
+            [2,3,0,4,1],
+            [0,3,2,4,1],
+            [3,0,2,4,1],
+            [2,0,3,4,1],
+            [0,2,3,4,1],
+            [1,2,3,4,0],
+            [2,1,3,4,0],
+            [3,1,2,4,0],
+            [1,3,2,4,0],
+            [2,3,1,4,0],
+            [3,2,1,4,0],
+            [3,2,4,1,0],
+            [2,3,4,1,0],
+            [4,3,2,1,0],
+            [3,4,2,1,0],
+            [2,4,3,1,0],
+            [4,2,3,1,0],
+            [4,1,3,2,0],
+            [1,4,3,2,0],
+            [3,4,1,2,0],
+            [4,3,1,2,0],
+            [1,3,4,2,0],
+            [3,1,4,2,0],
+            [2,1,4,3,0],
+            [1,2,4,3,0],
+            [4,2,1,3,0],
+            [2,4,1,3,0],
+            [1,4,2,3,0],
+            [4,1,2,3,0],
+        ];
+
+        return $distance_combination[array_search([3,1], $combination)];
+
+        $distance_permutation = [];
+
+        for ($i=0; $i < count($permutation); $i++) { 
+
+            $distance = [];
+            $count_distance = 0;
+            for ($j=0; $j < count($permutation[$i]); $j++) {
+
+                if ($j != count($permutation[$i])-1) {
+                    $start = $permutation[$i][$j];
+                    $end =  $permutation[$i][$j+1];
+
+                    // $start = $passenger[$combination[$a][0]]['pickup_point'];
+                    // $end = $passenger[$combination[$b][1]]['pickup_point'];
+
+                    // $dataJson = file_get_contents(
+                    //     "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="
+                    //     .$start
+                    //     ."&destinations=".$end
+                    //     ."&key=".env('GOOGLE_MAP_KEY')
+                    // );
+                    // $data = json_decode($dataJson,true);
+                    // $distance_value = $data['rows'][0]['elements'][0]['distance']['value'];
+
+                    // $distance[$i] = round($distance_value/1000, 1);
+                    
+
+                    $key = array_search([$start, $end], $combination);
+                    $count_distance += $distance_combination[$key];
+                }
+            }
+            $distance_permutation[$i] = $count_distance;
+        }
+
+        return $distance_permutation;
     }
 
     public function search_route(DoorToDoorService $doorToDoorService)

@@ -200,7 +200,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-title">Admin</div>
-                <a class="dropdown-item has-icon text-danger" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
+                <a class="dropdown-item has-icon text-danger" href="{{route('admin.logout')}}">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>

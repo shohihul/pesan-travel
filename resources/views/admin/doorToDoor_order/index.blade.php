@@ -1,4 +1,4 @@
-@extends('layouts.app', ['pageSlug' => 'customer'])
+@extends('layouts.app', ['pageSlug' => 'doorToDoor_order'])
 
 @section('content')
 <div class="main-content">

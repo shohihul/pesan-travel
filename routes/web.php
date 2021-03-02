@@ -20,12 +20,15 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/getRegencieByProvince', 'AreaController@getRegencieByProvince')
     ->name('getRegencieByProvince');
 
+    Route::get('logout', 'Auth\LoginController@logout')
+        ->name('admin.logout');
+
 Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
     Route::group(['roles'=>'admin'],function(){
         Route::namespace('Admin')->group(function () {
 
             Route::get('/admin', 'DashboardController@index')
-            ->name('admin.dashboard');
+                ->name('admin.dashboard');
 
             // Ajax
             Route::post('/ajax/invoice/{invoice}/update', 'InvoiceController@ajax_update');
@@ -80,6 +83,9 @@ Route::group(['middleware' => ['web', 'auth', 'roles']],function(){
                 ->name('admin.doorToDoor_service.route'); // route('admin.doorToDoor_service.route')
             Route::get('/admin/doorToDoor_service/{doorToDoorService}/search_route', 'DoorToDoorServiceController@search_route')
                 ->name('admin.doorToDoor_service.search_route'); // route('admin.doorToDoor_service.search_route')
+
+            Route::get('/admin/doorToDoor_service/{doorToDoorService}/permutation_route', 'DoorToDoorServiceController@permutation_route')
+                ->name('admin.doorToDoor_service.permutation_route'); // route('admin.doorToDoor_service.permutation_route')
 
             // Cars
             Route::get('/admin/cars', 'CarController@index')

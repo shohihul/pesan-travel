@@ -31,10 +31,10 @@
         </li>
 
         <li class="menu-header">Pesanan</li>
-        <li @if ($pageSlug == '' or $pageSlug == '') class="nav-item dropdown active" @endif class="nav-item dropdown">
+        <li @if ($pageSlug == 'doorToDoor_order' or $pageSlug == 'doorToDoor_order') class="nav-item dropdown active" @endif class="nav-item dropdown">
           <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-rv"></i></i> <span>Door to Door</span></a>
           <ul class="dropdown-menu">
-            <li @if ($pageSlug == '') class="active" @endif>
+            <li @if ($pageSlug == 'doorToDoor_order') class="active" @endif>
               <a class="nav-link" href="{{route('admin.doorToDoor_order.index')}}">
                 <i class="far fa-list-ul"></i> index
               </a>

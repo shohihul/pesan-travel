@@ -28,7 +28,7 @@ class DoorToDoorServiceRepository
     public function get_route()
     {
         return $this->model
-            ->where('status', 'scheduled')
+            ->where('status', 'open')
             ->groupBy('origin_id', 'destination_id')
             ->get();
     }

@@ -15,6 +15,9 @@
                 <h4>Informasi Umum</h4>
                 <div class="card-header-action">
                     <span class="badge badge-light" data-countdown="{{$data->start}}"></span> | 
+                    <a href="{{route('admin.doorToDoor_service.permutation_route', $data->id)}}">
+                        <i class="fas fa-route"></i> YYY
+                    </a>
                     @if ($data->route_ready == 0)
                         <a href="{{route('admin.doorToDoor_service.search_route', $data->id)}}" class="btn btn-primary {{(count($passenger) == 0) ? "disabled" : ""}}">
                             <i class="fas fa-route"></i> Cari Rute Terbaik

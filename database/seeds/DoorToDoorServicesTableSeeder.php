@@ -16,9 +16,9 @@ class DoorToDoorServicesTableSeeder extends Seeder
             'car_id' => '1',
             'origin_id' => '31',
             'destination_id' => '62',
-            'price' => '15000',
-            'start' => '2020-06-24 12:00:00',
-            'status' => 'scheduled',
+            'price' => '150000',
+            'start' => '2020-12-24 12:00:00',
+            'status' => 'open',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -27,9 +27,9 @@ class DoorToDoorServicesTableSeeder extends Seeder
             'car_id' => '1',
             'origin_id' => '42',
             'destination_id' => '51',
-            'price' => '15000',
-            'start' => '2020-09-24 12:00:00',
-            'status' => 'scheduled',
+            'price' => '200000',
+            'start' => '2020-12-12 12:00:00',
+            'status' => 'open',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -38,9 +38,9 @@ class DoorToDoorServicesTableSeeder extends Seeder
             'car_id' => '1',
             'origin_id' => '42',
             'destination_id' => '51',
-            'price' => '15000',
-            'start' => '2020-09-12 12:00:00',
-            'status' => 'scheduled',
+            'price' => '200000',
+            'start' => '2020-12-2 12:00:00',
+            'status' => 'open',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

@@ -19,7 +19,6 @@ class DoorToDoorOrdersTableSeeder extends Seeder
             'dropoff_point' => '-3.7877750364476417,102.26055809377482',
             'location_point_status' => 'new',
             'quantity' => '2',
-            'amount' => '300000',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -31,7 +30,6 @@ class DoorToDoorOrdersTableSeeder extends Seeder
             'dropoff_point' => '-3.813376401627553,102.26901341686613',
             'location_point_status' => 'new',
             'quantity' => '1',
-            'amount' => '150000',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -43,7 +41,6 @@ class DoorToDoorOrdersTableSeeder extends Seeder
             'dropoff_point' => '7.028682144719907,112.747642993927',
             'location_point_status' => 'new',
             'quantity' => '1',
-            'amount' => '150000',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

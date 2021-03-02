@@ -49,7 +49,7 @@
         pickup_map.addMarker({
             position: new google.maps.LatLng( {{$row->pickup_point}} ),
             infoWindow: {
-                content: '<h6>{{$row->user->name}}</h6><p>{{$row->quantity}} penumpang</p'
+                content: '<h6>{{$row->user->name}}</h6><p>Urutan {{$row->pickup_sequence}}</p><p>{{$row->quantity}} penumpang</p>'
             }
         });
     @endforeach
@@ -59,7 +59,7 @@
         dropoff_map.addMarker({
             position: new google.maps.LatLng( {{$row->dropoff_point}} ),
             infoWindow: {
-                content: '<h6>{{$row->user->name}}</h6><p>{{$row->quantity}} penumpang</p'
+                content: '<h6>{{$row->user->name}}</h6><p>Urutan {{$row->dropoff_sequence}}</p><p>{{$row->quantity}} penumpang</p>'
             }
         });
     @endforeach
@@ -83,11 +83,13 @@
             origin: [{{$dropoff_route[$i][0]}}],
             destination: [{{$dropoff_route[$i][1]}}],
             travelMode: 'driving',
-            strokeColor: '#131540',
+            strokeColor: '#131D55',
             strokeOpacity: 0.6,
             strokeWeight: 6
         });
     @endfor
+
+    console.log('aaa');
     
 </script>
 @endsection
